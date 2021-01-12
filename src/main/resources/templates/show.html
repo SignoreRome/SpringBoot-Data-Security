@@ -10,7 +10,7 @@
     <p th:text="${product.price}">VALUE</p>
 
     </br>
-    <form th:method="DELETE" th:action="@{/products/{id}(id = ${product.getId()})}">
+    <form th:method="DELETE" th:action="@{/{id}(id = ${product.getId()})}">
         <input type="submit" value="Delete"/>
     </form>
     </br>

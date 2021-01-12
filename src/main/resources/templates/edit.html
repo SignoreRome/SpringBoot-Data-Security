@@ -5,7 +5,7 @@
     <title>Edit</title>
 </head>
 <body>
-<form th:method="PATCH" th:action="@{/products/{id}(id =${product.getId()})}" th:object="${product}">
+<form th:method="PATCH" th:action="@{/{id}(id =${product.getId()})}" th:object="${product}">
 <!--    <label for="id">Enter id: </label>-->
 <!--    <input type="text" th:field="*{id}" id="id"/>-->
 <!--    &lt;!&ndash;    <div style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name error</div>&ndash;&gt;-->

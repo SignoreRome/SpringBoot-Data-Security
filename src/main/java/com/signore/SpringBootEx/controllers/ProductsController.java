@@ -8,6 +8,7 @@ import com.signore.SpringBootEx.services.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,7 @@ import java.security.Principal;
 
 
 @Controller
-@RequestMapping("/products")
+//@RequestMapping("/products")
 public class ProductsController {
 
     private ProductsService productsService;
@@ -37,6 +38,12 @@ public class ProductsController {
 //        return "Hello world";
 //    }
 
+    @GetMapping("/login")
+    public String loginForm(){
+        return "/login";
+    }
+
+
     @GetMapping
     public String index(Principal principal,
                         Model model,
@@ -47,7 +54,7 @@ public class ProductsController {
         if (principal!=null){
             User user = userService.findByUsername(principal.getName());
 //            System.out.println(user.getUsername());
-            model.addAttribute("user", user);
+            model.addAttribute("username", user.getUsername());
         }
         if (page == null) {
             page = 1;
@@ -72,10 +79,12 @@ public class ProductsController {
         return "/index";
     }
 
-    @PostMapping()
+
+    @PostMapping("/add")
+    @Secured(value = "ROLE_ADMIN")
     public String addNewProduct(@ModelAttribute("product") Product product) {
         productsService.addProduct(product);
-        return "redirect:/products";
+        return "redirect:/";
     }
 
     @GetMapping("/{id}")
@@ -85,22 +94,25 @@ public class ProductsController {
     }
 
     @GetMapping("/{id}/edit")
+    @Secured(value = "ROLE_ADMIN")
     public String showEditProduct(@PathVariable("id") Long id, Model model) {
         model.addAttribute("product", productsService.findById(id));
         return "/edit";
     }
 
     @PatchMapping("/{id}")
+    @Secured(value = "ROLE_ADMIN")
     public String editProduct(@PathVariable("id") Long id,
                               @ModelAttribute("updatedProduct") Product updatedProduct) {
         productsService.editProduct(id, updatedProduct);
-        return "redirect:/products";
+        return "redirect:/";
     }
 
     @DeleteMapping("/{id}")
+    @Secured(value = "ROLE_ADMIN")
     public String deleteProduct(@PathVariable("id") Long id) {
         productsService.deleteProduct(id);
-        return "redirect:/products";
+        return "redirect:/";
     }
 
 }

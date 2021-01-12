@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.sql.DataSource;
@@ -52,13 +53,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/products/**/edit").hasAnyRole("ADMIN", "USER")
+//                .antMatchers("/products/**/edit").hasAnyRole("ADMIN", "USER")
                 .anyRequest().permitAll()
                 .and()
                 .formLogin()
-//                .loginPage("/login")
-//                .loginProcessingUrl("/authenticateTheUser")
+                .loginPage("/login")
+                .loginProcessingUrl("/authenticateTheUser")
                 .permitAll();
+//        http.sessionManagement()
+//                .sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
     }
 
     @Override
